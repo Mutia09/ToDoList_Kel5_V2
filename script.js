@@ -3,7 +3,6 @@ class ToDoList {
         this.initPage();
     }
 
-    // 🔥 NORMALISASI USERNAME (FIX UTAMA)
     normalize(user) {
         return user.trim().toLowerCase().replace(/\s+/g, '');
     }
@@ -18,7 +17,7 @@ class ToDoList {
         }
     }
 
-    // === LOGIN ===
+    // LOGIN 
     loginPage() {
         const form = document.getElementById('loginForm');
 
@@ -45,7 +44,6 @@ class ToDoList {
                 users = {};
             }
 
-            // 🔥 cari user aman
             const foundUser = Object.keys(users).find(
                 u => this.normalize(u) === userInput
             );
@@ -75,7 +73,7 @@ class ToDoList {
         });
     }
 
-    // === REGISTER ===
+    // REGISTER 
     registerPage() {
         const form = document.getElementById('registerForm');
 
@@ -117,7 +115,7 @@ class ToDoList {
         });
     }
 
-    // === CHECK LOGIN ===
+    // CHECK LOGIN 
     checkLogin() {
         const user = localStorage.getItem('currentUser');
 
@@ -137,7 +135,7 @@ class ToDoList {
         this.initApp(user);
     }
 
-    // === APP ===
+    // APP 
     initApp(user) {
         this.user = user;
 
