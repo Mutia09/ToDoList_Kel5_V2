@@ -13,33 +13,42 @@ class ToDoList {
         }
     }
 
-    // === LOGIN PAGE ===
+    // === LOGIN PAGE (FIXED) ===
     loginPage() {
         const form = document.getElementById('loginForm');
 
         form.addEventListener('submit', (e) => {
             e.preventDefault();
 
-            const user = document.getElementById('loginUsername').value.trim().toLowerCase();
+            const userInput = document.getElementById('loginUsername').value
+                .trim()
+                .toLowerCase()
+                .replace(/\s+/g, '');
+
             const pass = document.getElementById('loginPassword').value;
 
-            if (!user || !pass) {
+            if (!userInput || !pass) {
                 alert('Isi username & password!');
                 return;
             }
 
             const users = JSON.parse(localStorage.getItem('users') || '{}');
 
-            if (!users[user]) {
+            // 🔥 CARI USER AMAN (ANTI ERROR)
+            const foundUser = Object.keys(users).find(u =>
+                u.trim().toLowerCase().replace(/\s+/g, '') === userInput
+            );
+
+            if (!foundUser) {
                 alert('User tidak ditemukan!');
                 return;
             }
 
             try {
-                const savedPass = atob(users[user]);
+                const savedPass = atob(users[foundUser]);
 
                 if (savedPass === pass) {
-                    localStorage.setItem('currentUser', user);
+                    localStorage.setItem('currentUser', foundUser);
                     alert('Login berhasil! 🎉');
                     window.location.href = 'index.html';
                 } else {
@@ -55,14 +64,18 @@ class ToDoList {
         });
     }
 
-    // === REGISTER PAGE ===
+    // === REGISTER PAGE (FIXED) ===
     registerPage() {
         const form = document.getElementById('registerForm');
 
         form.addEventListener('submit', (e) => {
             e.preventDefault();
 
-            const user = document.getElementById('registerUsername').value.trim().toLowerCase();
+            const user = document.getElementById('registerUsername').value
+                .trim()
+                .toLowerCase()
+                .replace(/\s+/g, '');
+
             const pass = document.getElementById('registerPassword').value;
 
             if (!user || pass.length < 4) {
@@ -83,12 +96,10 @@ class ToDoList {
                 return;
             }
 
-            // SIMPAN
             users[user] = btoa(pass);
-
             localStorage.setItem('users', JSON.stringify(users));
 
-            console.log('✅ DATA BERHASIL DISIMPAN:', localStorage.getItem('users'));
+            console.log('✅ DATA TERSIMPAN:', localStorage.getItem('users'));
 
             alert('Daftar berhasil! Silakan login.');
             window.location.href = 'login.html';
